@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "1db75525-ab10-4880-b3c3-b34424f1ffd3",
+		"name": "grafana-log-ql",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9825253"
+	},
+	"item": [
+		{
+			"name": "push",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"let epochTimeSec = moment().add(10,'seconds').unix();",
+							"pm.environment.set(\"epochTimeSec\", epochTimeSec);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"streams\": [\n        {\n            \"stream\": {\n                \"type\": \"back-end\",\n                \"source\": \"web-server\",\n                \"environment\": \"dev\"\n            },\n            \"values\": [\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"Logs from Web server running in dev environment\"\n                ]\n            ]\n        },\n        {\n            \"stream\": {\n                \"type\": \"back-end\",\n                \"source\": \"data-base\",\n                \"environment\": \"dev\"\n            },\n            \"values\": [\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"Logs from Data base running in dev environment\"\n                ]\n            ]\n        },\n        {\n            \"stream\": {\n                \"type\": \"front-end\",\n                \"environment\": \"dev\"\n            },\n            \"values\": [\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"Logs from Web page running in dev environment\"\n                ]\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3100/loki/api/v1/push",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3100",
+					"path": [
+						"loki",
+						"api",
+						"v1",
+						"push"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "json-logs",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"let epochTimeSec = moment().add(10,'seconds').unix();",
+							"pm.environment.set(\"epochTimeSec\", epochTimeSec);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"streams\": [\n        {\n            \"stream\": {\n                \"name\": \"json-logs\"\n            },\n            \"values\": [\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"level\\\": \\\"INFO\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.filters.RequestLogFilter\\\",\\r\\n    \\\"mdc\\\": {\\r\\n        \\\"trace-id\\\": \\\"df106751-44e8-468d-a6ab-b5e53032a887\\\",\\r\\n        \\\"request.queryString\\\": null,\\r\\n        \\\"request.headers\\\": \\\"content-type=application\\/json;user-agent=PostmanRuntime\\/7.32.2;accept=*\\/;content-length=144\\\",\\r\\n        \\\"request.method\\\": \\\"POST\\\",\\r\\n        \\\"request.requestURL\\\": \\\"http:\\/\\/localhost:8001\\/cutomer-system\\/v1\\/customers\\\",\\r\\n        \\\"response.status\\\": 201\\r\\n    }\\r\\n}\"\n                ],\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"level\\\": \\\"INFO\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.service.CustomerService\\\",\\r\\n    \\\"mdc\\\": {\\r\\n        \\\"trace-id\\\": \\\"df106751-44e8-468d-a6ab-b5e53032a887\\\",\\r\\n        \\\"request.queryString\\\": null,\\r\\n        \\\"request.headers\\\": \\\"content-type=application\\/json;user-agent=PostmanRuntime\\/7.32.2;accept=*\\/;content-length=144\\\",\\r\\n        \\\"request.method\\\": \\\"POST\\\",\\r\\n        \\\"request.requestURL\\\": \\\"http:\\/\\/localhost:8001\\/cutomer-system\\/v1\\/customers\\\",\\r\\n        \\\"response.status\\\": 400,\\r\\n        \\\"response.message\\\": \\\"The id is required\\\"\\r\\n    }\\r\\n}\"\n                ],\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"level\\\": \\\"INFO\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.filters.RequestLogFilter\\\",\\r\\n    \\\"mdc\\\": {\\r\\n        \\\"trace-id\\\": \\\"df206751-44e8-468d-a6ab-b5e53032a887\\\",\\r\\n        \\\"request.queryString\\\": \\\"fullName=[Ivan Polovyi],phoneNumber=[893-087-1038],createdAt=[2016-01-30]\\\",\\r\\n        \\\"request.headers\\\": \\\"content-type=application\\/json;user-agent=PostmanRuntime\\/7.32.2;accept=*\\/;content-length=144\\\",\\r\\n        \\\"request.method\\\": \\\"GET\\\",\\r\\n        \\\"request.requestURL\\\": \\\"http:\\/\\/localhost:8001\\/cutomer-system\\/v2\\/customers\\\",\\r\\n        \\\"response.status\\\": 200\\r\\n    }\\r\\n}\"\n                ],\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"level\\\": \\\"INFO\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.filters.RequestLogFilter\\\",\\r\\n    \\\"mdc\\\": {\\r\\n        \\\"trace-id\\\": \\\"df206751-44e8-468d-a6ab-b5e53032a887\\\",\\r\\n        \\\"request.queryString\\\": \\\"fullName=[Ivan Polovyi],phoneNumber=[893-087-1038],createdAt=[2016-01-30]\\\",\\r\\n        \\\"request.headers\\\": \\\"content-type=application\\/json;user-agent=PostmanRuntime\\/7.32.2;accept=*\\/;content-length=144\\\",\\r\\n        \\\"request.method\\\": \\\"GET\\\",\\r\\n        \\\"request.requestURL\\\": \\\"http:\\/\\/localhost:8001\\/cutomer-system\\/v1\\/customers\\\",\\r\\n        \\\"response.status\\\": 200\\r\\n    }\\r\\n}\"\n                ],\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"exception\\\": \\\"org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org\\\\\\/springframework\\\\\\/boot\\\\\\/autoconfigure\\\\\\/orm\\\\\\/jpa\\\\\\/HibernateJpaConfiguration.class]: Entity 'com.polovyi.ivan.tutorials.entity.CustomerEntity' has no identifier (every '@Entity' class must declare or inherit at least one '@Id' or '@EmbeddedId' property)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1770)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)\\\\r\\\\n\\\\tat org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1132)\\\\r\\\\n\\\\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:907)\\\\r\\\\n\\\\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:584)\\\\r\\\\n\\\\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)\\\\r\\\\n\\\\tat org.springframework.boot.SpringApplication.refresh(SpringApplication.java:732)\\\\r\\\\n\\\\tat org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:434)\\\\r\\\\n\\\\tat org.springframework.boot.SpringApplication.run(SpringApplication.java:310)\\\\r\\\\n\\\\tat org.springframework.boot.SpringApplication.run(SpringApplication.java:1304)\\\\r\\\\n\\\\tat org.springframework.boot.SpringApplication.run(SpringApplication.java:1293)\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.SpringWithGrafanaLokiApplication.main(SpringWithGrafanaLokiApplication.java:10)\\\\r\\\\nCaused by: org.hibernate.AnnotationException: Entity 'com.polovyi.ivan.tutorials.entity.CustomerEntity' has no identifier (every '@Entity' class must declare or inherit at least one '@Id' or '@EmbeddedId' property)\\\\r\\\\n\\\\tat org.hibernate.cfg.InheritanceState.determineDefaultAccessType(InheritanceState.java:266)\\\\r\\\\n\\\\tat org.hibernate.cfg.InheritanceState.getElementsToProcess(InheritanceState.java:210)\\\\r\\\\n\\\\tat org.hibernate.cfg.annotations.EntityBinder.bindEntityClass(EntityBinder.java:260)\\\\r\\\\n\\\\tat org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:556)\\\\r\\\\n\\\\tat org.hibernate.boot.model.source.internal.annotations.AnnotationMetadataSourceProcessorImpl.processEntityHierarchies(AnnotationMetadataSourceProcessorImpl.java:216)\\\\r\\\\n\\\\tat org.hibernate.boot.model.process.spi.MetadataBuildingProcess$1.processEntityHierarchies(MetadataBuildingProcess.java:247)\\\\r\\\\n\\\\tat org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:290)\\\\r\\\\n\\\\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1348)\\\\r\\\\n\\\\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1419)\\\\r\\\\n\\\\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\\\\r\\\\n\\\\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376)\\\\r\\\\n\\\\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)\\\\r\\\\n\\\\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)\\\\r\\\\n\\\\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1816)\\\\r\\\\n\\\\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766)\\\",\\r\\n    \\\"level\\\": \\\"ERROR\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.entity.CustomerEntity\\\",\\r\\n    \\\"thread\\\": \\\"thread-1\\\",\\r\\n    \\\"message\\\": \\\"An error occurred during persisting entity to a database\\\"\\r\\n}\"\n                ],\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"exception\\\": \\\"java.time.format.DateTimeParseException: Text '203-02-23' could not be parsed at index 0\\\\r\\\\n\\\\tat java.base\\\\\\/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2052)\\\\r\\\\n\\\\tat java.base\\\\\\/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1954)\\\\r\\\\n\\\\tat java.base\\\\\\/java.time.LocalDate.parse(LocalDate.java:430)\\\\r\\\\n\\\\tat java.base\\\\\\/java.time.LocalDate.parse(LocalDate.java:415)\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.service.CustomerService.updateCustomer(CustomerService.java:64)\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.controller.CustomerController.updateCustomer(CustomerController.java:68)\\\\r\\\\n\\\\tat java.base\\\\\\/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\\\\r\\\\n\\\\tat java.base\\\\\\/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)\\\\r\\\\n\\\\tat java.base\\\\\\/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\\\\r\\\\n\\\\tat java.base\\\\\\/java.lang.reflect.Method.invoke(Method.java:568)\\\\r\\\\n\\\\tat org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:207)\\\\r\\\\n\\\\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:152)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\\\\r\\\\n\\\\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)\\\\r\\\\n\\\\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)\\\\r\\\\n\\\\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)\\\\r\\\\n\\\\tat org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925)\\\\r\\\\n\\\\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593)\\\\r\\\\n\\\\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)\\\\r\\\\n\\\\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\\\\r\\\\n\\\\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.filter.RequestLogFilter.doFilter(RequestLogFilter.java:35)\\\",\\r\\n    \\\"level\\\": \\\"ERROR\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.service.CustomerService\\\",\\r\\n    \\\"thread\\\": \\\"thread-2\\\",\\r\\n    \\\"message\\\": \\\"Error occures during date format\\\"\\r\\n}\"\n                ],\n                [\n                    \"{{epochTimeSec}}900300001\",\n                    \"{\\r\\n    \\\"exception\\\": \\\"java.lang.NullPointerException: Cannot invoke \\\\\\\"String.toLowerCase(java.util.Locale)\\\\\\\" because \\\\\\\"s\\\\\\\" is null\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.service.CustomerService.updateCustomer(CustomerService.java:63)\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.controller.CustomerController.updateCustomer(CustomerController.java:68)\\\\r\\\\n\\\\tat java.base\\\\\\/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\\\\r\\\\n\\\\tat java.base\\\\\\/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)\\\\r\\\\n\\\\tat java.base\\\\\\/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\\\\r\\\\n\\\\tat java.base\\\\\\/java.lang.reflect.Method.invoke(Method.java:568)\\\\r\\\\n\\\\tat org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:207)\\\\r\\\\n\\\\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:152)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)\\\\r\\\\n\\\\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\\\\r\\\\n\\\\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)\\\\r\\\\n\\\\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)\\\\r\\\\n\\\\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)\\\\r\\\\n\\\\tat org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925)\\\\r\\\\n\\\\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593)\\\\r\\\\n\\\\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)\\\\r\\\\n\\\\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\\\\r\\\\n\\\\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\\\\r\\\\n\\\\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\\\\r\\\\n\\\\tat com.polovyi.ivan.tutorials.filter.RequestLogFilter.doFilter(RequestLogFilter.java:35)\\\",\\r\\n    \\\"level\\\": \\\"ERROR\\\",\\r\\n    \\\"logger\\\": \\\"com.polovyi.ivan.tutorials.service.CustomerService\\\",\\r\\n    \\\"thread\\\": \\\"thread-3\\\",\\r\\n    \\\"message\\\": \\\"Error processing occured during customer entity processing\\\"\\r\\n}\"\n                ]\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3100/loki/api/v1/push",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3100",
+					"path": [
+						"loki",
+						"api",
+						"v1",
+						"push"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
